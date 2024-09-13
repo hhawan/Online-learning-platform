@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Online Learning Platform</title>
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <!-- Custom Styles -->
+    <style>
+      body {
+        background-color: #f8f9fa;
+      }
+      .course-card {
+        border-radius: 10px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease;
+      }
+      .course-card:hover {
+        transform: translateY(-5px);
+      }
+      .enroll-btn {
+        background-color: #28a745;
+        color: white;
+      }
+      .enroll-btn:hover {
+        background-color: #218838;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">Online Learning</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="index.html"
+                >Courses</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="profile.html">My Profile</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Course Listing -->
+    <div class="container mt-5">
+      <h1 class="mb-4 text-center">Available Courses</h1>
+      <div class="row" id="course-list">
+        <!-- Course cards will be dynamically inserted here -->
+      </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+      // Sample course data
+      const courses = [
+        {
+          id: 1,
+          title: "Web Development",
+          description:
+            "Learn to build responsive websites using HTML, CSS, and JavaScript.",
+        },
+        {
+          id: 2,
+          title: "Data Science",
+          description:
+            "An introduction to data analysis, machine learning, and statistics.",
+        },
+        {
+          id: 3,
+          title: "Digital Marketing",
+          description:
+            "Master the strategies for SEO, social media marketing, and online ads.",
+        },
+        {
+          id: 4,
+          title: "Graphic Design",
+          description:
+            "Create visually appealing designs using Adobe Photoshop and Illustrator.",
+        },
+      ];
+
+      // Render courses on the page
+      const courseList = document.getElementById("course-list");
+      courses.forEach((course) => {
+        const courseCard = `
+            <div class="col-md-6 col-lg-4 mb-4">
+                <div class="card course-card p-3">
+                    <h4 class="card-title">${course.title}</h4>
+                    <p class="card-text">${course.description}</p>
+                    <button class="btn enroll-btn" onclick="enrollCourse(${course.id})">Enroll</button>
+                </div>
+            </div>
+        `;
+        courseList.innerHTML += courseCard;
+      });
+
+      // Enroll in a course (store in localStorage)
+      function enrollCourse(courseId) {
+        let enrolledCourses =
+          JSON.parse(localStorage.getItem("enrolledCourses")) || [];
+        const course = courses.find((c) => c.id === courseId);
+        if (!enrolledCourses.some((c) => c.id === courseId)) {
+          enrolledCourses.push({ ...course, progress: 0 });
+          localStorage.setItem(
+            "enrolledCourses",
+            JSON.stringify(enrolledCourses)
+          );
+          alert(`Enrolled in ${course.title}`);
+        } else {
+          alert(`You are already enrolled in ${course.title}`);
+        }
+      }
+    </script>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>

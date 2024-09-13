@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Profile</title>
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <!-- Custom Styles -->
+    <style>
+      body {
+        background-color: #f8f9fa;
+      }
+      .progress-bar-custom {
+        background-color: #28a745;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="index.html">Online Learning</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="index.html">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="profile.html"
+                >My Profile</a
+              >
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Profile Section -->
+    <div class="container mt-5">
+      <h1 class="mb-4 text-center">My Enrolled Courses</h1>
+      <div id="enrolled-courses">
+        <!-- Enrolled courses and progress will be dynamically inserted here -->
+      </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+      // Load enrolled courses from localStorage
+      const enrolledCourses =
+        JSON.parse(localStorage.getItem("enrolledCourses")) || [];
+
+      const enrolledCoursesContainer =
+        document.getElementById("enrolled-courses");
+
+      if (enrolledCourses.length > 0) {
+        enrolledCourses.forEach((course, index) => {
+          const courseCard = `
+                <div class="mb-4">
+                    <h4>${course.title}</h4>
+                    <div class="progress mb-2">
+                        <div class="progress-bar progress-bar-custom" role="progressbar" style="width: ${course.progress}%" aria-valuenow="${course.progress}" aria-valuemin="0" aria-valuemax="100">${course.progress}%</div>
+                    </div>
+                    <input type="range" class="form-range" min="0" max="100" value="${course.progress}" onchange="updateProgress(${index}, this.value)">
+                </div>
+            `;
+          enrolledCoursesContainer.innerHTML += courseCard;
+        });
+      } else {
+        enrolledCoursesContainer.innerHTML =
+          '<p class="text-center">You have not enrolled in any courses yet.</p>';
+      }
+
+      // Update progress and store it in localStorage
+      function updateProgress(courseIndex, progressValue) {
+        enrolledCourses[courseIndex].progress = progressValue;
+        localStorage.setItem(
+          "enrolledCourses",
+          JSON.stringify(enrolledCourses)
+        );
+        location.reload();
+      }
+    </script>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>
